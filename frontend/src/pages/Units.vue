@@ -50,7 +50,7 @@
   <EmptyState
     v-else-if="organizations.data && !rows.length"
     name="Units"
-    :icon="UnitsIcon"
+    :icon="SquareAsterisk"
   />
   <OrganizationModal
     v-if="showOrganizationModal"
@@ -60,7 +60,7 @@
 <script setup>
 import ViewBreadcrumbs from '@/components/ViewBreadcrumbs.vue'
 import CustomActions from '@/components/CustomActions.vue'
-import UnitsIcon from '@/components/Icons/UnitsIcon.vue'
+import SquareAsterisk from '@/components/Icons/SquareAsterisk.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
 import UnitsListView from '@/components/ListViews/UnitsListView.vue'

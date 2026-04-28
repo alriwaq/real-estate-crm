@@ -50,7 +50,7 @@
   <EmptyState
     v-else-if="organizations.data && !rows.length"
     name="Projects"
-    :icon="ProjectsIcon"
+    :icon="PinIcon"
   />
   <OrganizationModal
     v-if="showOrganizationModal"
@@ -60,7 +60,7 @@
 <script setup>
 import ViewBreadcrumbs from '@/components/ViewBreadcrumbs.vue'
 import CustomActions from '@/components/CustomActions.vue'
-import ProjectsIcon from '@/components/Icons/ProjectsIcon.vue'
+import PinIcon from '@/components/Icons/PinIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
 import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
 import ProjectsListView from '@/components/ListViews/ProjectsListView.vue'
