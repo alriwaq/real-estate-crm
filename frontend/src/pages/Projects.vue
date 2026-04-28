@@ -5,37 +5,37 @@
     </template>
     <template #right-header>
       <CustomActions
-        v-if="organizationsListView?.customListActions"
-        :actions="organizationsListView.customListActions"
+        v-if="projectsListView?.customListActions"
+        :actions="projectsListView.customListActions"
       />
       <Button
         variant="solid"
         :label="__('Create')"
         iconLeft="plus"
-        @click="showOrganizationModal = true"
+        @click="showProjectModal = true"
       />
     </template>
   </LayoutHeader>
   <ViewControls
     ref="viewControls"
-    v-model="organizations"
+    v-model="projects"
     v-model:loadMore="loadMore"
     v-model:resizeColumn="triggerResize"
     v-model:updatedPageCount="updatedPageCount"
     doctype="Real Estate Project"
   />
   <ProjectsListView
-    v-if="organizations.data && rows.length"
-    ref="organizationsListView"
-    v-model="organizations.data.page_length_count"
-    v-model:list="organizations"
+    v-if="projects.data && rows.length"
+    ref="projectsListView"
+    v-model="projects.data.page_length_count"
+    v-model:list="projects"
     :rows="rows"
     :columns="columns"
     :options="{
       showTooltip: false,
       resizeColumn: true,
-      rowCount: organizations.data.row_count,
-      totalCount: organizations.data.total_count,
+      rowCount: projects.data.row_count,
+      totalCount: projects.data.total_count,
     }"
     @loadMore="() => loadMore++"
     @columnWidthUpdated="() => triggerResize++"
@@ -48,36 +48,36 @@
     "
   />
   <EmptyState
-    v-else-if="organizations.data && !rows.length"
+    v-else-if="projects.data && !rows.length"
     name="Projects"
     :icon="PinIcon"
   />
-  <OrganizationModal
-    v-if="showOrganizationModal"
-    v-model="showOrganizationModal"
+  <ProjectModal
+    v-if="showProjectModal"
+    v-model="showProjectModal"
   />
 </template>
+
 <script setup>
 import ViewBreadcrumbs from '@/components/ViewBreadcrumbs.vue'
 import CustomActions from '@/components/CustomActions.vue'
 import PinIcon from '@/components/Icons/PinIcon.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
-import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
+import ProjectModal from '@/components/Modals/ProjectModal.vue'
 import ProjectsListView from '@/components/ListViews/ProjectsListView.vue'
 import ViewControls from '@/components/ViewControls.vue'
 import { getMeta } from '@/stores/meta'
 import { formatDate, timeAgo, website } from '@/utils'
 import { ref, computed } from 'vue'
-import EmptyState from '../components/ListViews/EmptyState.vue'
+import EmptyState from '@/components/ListViews/EmptyState.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('Real Estate Project')
 
-const organizationsListView = ref(null)
-const showOrganizationModal = ref(false)
+const projectsListView = ref(null)
+const showProjectModal = ref(false)
 
-// organizations data is loaded in the ViewControls component
-const organizations = ref({})
+const projects = ref({})
 const loadMore = ref(1)
 const triggerResize = ref(1)
 const updatedPageCount = ref(20)
@@ -85,16 +85,16 @@ const viewControls = ref(null)
 
 const rows = computed(() => {
   if (
-    !organizations.value?.data?.data ||
-    !['list', 'group_by'].includes(organizations.value.data.view_type)
+    !projects.value?.data?.data ||
+    !['list', 'group_by'].includes(projects.value.data.view_type)
   )
     return []
-  return organizations.value?.data.data.map((organization) => {
+  return projects.value?.data.data.map((project) => {
     let _rows = {}
-    organizations.value?.data.rows.forEach((row) => {
-      _rows[row] = organization[row]
+    projects.value?.data.rows.forEach((row) => {
+      _rows[row] = project[row]
 
-      let fieldType = organizations.value?.data.columns?.find(
+      let fieldType = projects.value?.data.columns?.find(
         (col) => (col.key || col.value) == row,
       )?.type
 
@@ -104,7 +104,7 @@ const rows = computed(() => {
         !['modified', 'creation'].includes(row)
       ) {
         _rows[row] = formatDate(
-          organization[row],
+          project[row],
           '',
           true,
           fieldType == 'Datetime',
@@ -112,28 +112,25 @@ const rows = computed(() => {
       }
 
       if (fieldType && fieldType == 'Currency') {
-        _rows[row] = getFormattedCurrency(row, organization)
+        _rows[row] = getFormattedCurrency(row, project)
       }
 
       if (fieldType && fieldType == 'Float') {
-        _rows[row] = getFormattedFloat(row, organization)
+        _rows[row] = getFormattedFloat(row, project)
       }
 
       if (fieldType && fieldType == 'Percent') {
-        _rows[row] = getFormattedPercent(row, organization)
+        _rows[row] = getFormattedPercent(row, project)
       }
 
-      if (row === 'organization_name') {
+      if (row === 'project_name') {
         _rows[row] = {
-          label: organization.organization_name,
-          logo: organization.organization_logo,
+          label: project.project_name,
         }
-      } else if (row === 'website') {
-        _rows[row] = website(organization.website)
       } else if (['modified', 'creation'].includes(row)) {
         _rows[row] = {
-          label: formatDate(organization[row]),
-          timeAgo: __(timeAgo(organization[row])),
+          label: formatDate(project[row]),
+          timeAgo: __(timeAgo(project[row])),
         }
       }
     })
@@ -142,9 +139,7 @@ const rows = computed(() => {
 })
 
 const columns = computed(() => {
-  let _columns = organizations.value?.data?.columns || []
-
-  // Set align right for last column
+  let _columns = projects.value?.data?.columns || []
   if (_columns.length) {
     _columns = _columns.map((col, index) => {
       if (index === _columns.length - 1) {
@@ -153,7 +148,6 @@ const columns = computed(() => {
       return col
     })
   }
-
   return _columns
 })
 </script>

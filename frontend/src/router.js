@@ -28,7 +28,6 @@ const routes = [
     path: '/leads/:leadId',
     name: 'Lead',
     component: () => import(`@/pages/${handleMobileView('Lead')}.vue`),
-    props: true,
   },
   {
     alias: '/deals',
@@ -40,7 +39,6 @@ const routes = [
     path: '/deals/:dealId',
     name: 'Deal',
     component: () => import(`@/pages/${handleMobileView('Deal')}.vue`),
-    props: true,
   },
   {
     alias: '/notes',
@@ -64,7 +62,6 @@ const routes = [
     path: '/contacts/:contactId',
     name: 'Contact',
     component: () => import(`@/pages/${handleMobileView('Contact')}.vue`),
-    props: true,
   },
   {
     alias: '/organizations',
@@ -76,7 +73,6 @@ const routes = [
     path: '/organizations/:organizationId',
     name: 'Organization',
     component: () => import(`@/pages/${handleMobileView('Organization')}.vue`),
-    props: true,
   },
   {
     alias: '/call-logs',
@@ -91,10 +87,6 @@ const routes = [
     component: () => import('@/pages/Projects.vue'),
   },
   {
-    path: '/projects/:projectId',
-    name: 'Project',
-    component: () => import(`@/pages/${handleMobileView('Project')}.vue`),
-    props: true,
   },
   {
     alias: '/units',
@@ -103,10 +95,6 @@ const routes = [
     component: () => import('@/pages/Units.vue'),
   },
   {
-    path: '/units/:unitId',
-    name: 'Unit',
-    component: () => import(`@/pages/${handleMobileView('Unit')}.vue`),
-    props: true,
   },
   {
     path: '/data-import',
@@ -117,13 +105,11 @@ const routes = [
     path: '/data-import/doctype/:doctype',
     name: 'NewDataImport',
     component: () => import('@/pages/DataImport.vue'),
-    props: true,
   },
   {
     path: '/data-import/:importName',
     name: 'DataImport',
     component: () => import('@/pages/DataImport.vue'),
-    props: true,
   },
   {
     path: '/welcome',

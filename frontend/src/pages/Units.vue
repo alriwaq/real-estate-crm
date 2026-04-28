@@ -5,37 +5,37 @@
     </template>
     <template #right-header>
       <CustomActions
-        v-if="organizationsListView?.customListActions"
-        :actions="organizationsListView.customListActions"
+        v-if="unitsListView?.customListActions"
+        :actions="unitsListView.customListActions"
       />
       <Button
         variant="solid"
         :label="__('Create')"
         iconLeft="plus"
-        @click="showOrganizationModal = true"
+        @click="showUnitModal = true"
       />
     </template>
   </LayoutHeader>
   <ViewControls
     ref="viewControls"
-    v-model="organizations"
+    v-model="units"
     v-model:loadMore="loadMore"
     v-model:resizeColumn="triggerResize"
     v-model:updatedPageCount="updatedPageCount"
     doctype="Real Estate Unit"
   />
   <UnitsListView
-    v-if="organizations.data && rows.length"
-    ref="organizationsListView"
-    v-model="organizations.data.page_length_count"
-    v-model:list="organizations"
+    v-if="units.data && rows.length"
+    ref="unitsListView"
+    v-model="units.data.page_length_count"
+    v-model:list="units"
     :rows="rows"
     :columns="columns"
     :options="{
       showTooltip: false,
       resizeColumn: true,
-      rowCount: organizations.data.row_count,
-      totalCount: organizations.data.total_count,
+      rowCount: units.data.row_count,
+      totalCount: units.data.total_count,
     }"
     @loadMore="() => loadMore++"
     @columnWidthUpdated="() => triggerResize++"
@@ -48,36 +48,36 @@
     "
   />
   <EmptyState
-    v-else-if="organizations.data && !rows.length"
+    v-else-if="units.data && !rows.length"
     name="Units"
     :icon="SquareAsterisk"
   />
-  <OrganizationModal
-    v-if="showOrganizationModal"
-    v-model="showOrganizationModal"
+  <UnitModal
+    v-if="showUnitModal"
+    v-model="showUnitModal"
   />
 </template>
+
 <script setup>
 import ViewBreadcrumbs from '@/components/ViewBreadcrumbs.vue'
 import CustomActions from '@/components/CustomActions.vue'
 import SquareAsterisk from '@/components/Icons/SquareAsterisk.vue'
 import LayoutHeader from '@/components/LayoutHeader.vue'
-import OrganizationModal from '@/components/Modals/OrganizationModal.vue'
+import UnitModal from '@/components/Modals/UnitModal.vue'
 import UnitsListView from '@/components/ListViews/UnitsListView.vue'
 import ViewControls from '@/components/ViewControls.vue'
 import { getMeta } from '@/stores/meta'
-import { formatDate, timeAgo, website } from '@/utils'
+import { formatDate, timeAgo } from '@/utils'
 import { ref, computed } from 'vue'
-import EmptyState from '../components/ListViews/EmptyState.vue'
+import EmptyState from '@/components/ListViews/EmptyState.vue'
 
 const { getFormattedPercent, getFormattedFloat, getFormattedCurrency } =
   getMeta('Real Estate Unit')
 
-const organizationsListView = ref(null)
-const showOrganizationModal = ref(false)
+const unitsListView = ref(null)
+const showUnitModal = ref(false)
 
-// organizations data is loaded in the ViewControls component
-const organizations = ref({})
+const units = ref({})
 const loadMore = ref(1)
 const triggerResize = ref(1)
 const updatedPageCount = ref(20)
@@ -85,16 +85,16 @@ const viewControls = ref(null)
 
 const rows = computed(() => {
   if (
-    !organizations.value?.data?.data ||
-    !['list', 'group_by'].includes(organizations.value.data.view_type)
+    !units.value?.data?.data ||
+    !['list', 'group_by'].includes(units.value.data.view_type)
   )
     return []
-  return organizations.value?.data.data.map((organization) => {
+  return units.value?.data.data.map((unit) => {
     let _rows = {}
-    organizations.value?.data.rows.forEach((row) => {
-      _rows[row] = organization[row]
+    units.value?.data.rows.forEach((row) => {
+      _rows[row] = unit[row]
 
-      let fieldType = organizations.value?.data.columns?.find(
+      let fieldType = units.value?.data.columns?.find(
         (col) => (col.key || col.value) == row,
       )?.type
 
@@ -104,7 +104,7 @@ const rows = computed(() => {
         !['modified', 'creation'].includes(row)
       ) {
         _rows[row] = formatDate(
-          organization[row],
+          unit[row],
           '',
           true,
           fieldType == 'Datetime',
@@ -112,28 +112,21 @@ const rows = computed(() => {
       }
 
       if (fieldType && fieldType == 'Currency') {
-        _rows[row] = getFormattedCurrency(row, organization)
+        _rows[row] = getFormattedCurrency(row, unit)
       }
 
       if (fieldType && fieldType == 'Float') {
-        _rows[row] = getFormattedFloat(row, organization)
+        _rows[row] = getFormattedFloat(row, unit)
       }
 
       if (fieldType && fieldType == 'Percent') {
-        _rows[row] = getFormattedPercent(row, organization)
+        _rows[row] = getFormattedPercent(row, unit)
       }
 
-      if (row === 'organization_name') {
+      if (['modified', 'creation'].includes(row)) {
         _rows[row] = {
-          label: organization.organization_name,
-          logo: organization.organization_logo,
-        }
-      } else if (row === 'website') {
-        _rows[row] = website(organization.website)
-      } else if (['modified', 'creation'].includes(row)) {
-        _rows[row] = {
-          label: formatDate(organization[row]),
-          timeAgo: __(timeAgo(organization[row])),
+          label: formatDate(unit[row]),
+          timeAgo: __(timeAgo(unit[row])),
         }
       }
     })
@@ -142,9 +135,7 @@ const rows = computed(() => {
 })
 
 const columns = computed(() => {
-  let _columns = organizations.value?.data?.columns || []
-
-  // Set align right for last column
+  let _columns = units.value?.data?.columns || []
   if (_columns.length) {
     _columns = _columns.map((col, index) => {
       if (index === _columns.length - 1) {
@@ -153,7 +144,6 @@ const columns = computed(() => {
       return col
     })
   }
-
   return _columns
 })
 </script>
