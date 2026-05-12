@@ -5,7 +5,7 @@
     :options="{
       getRowRoute: (row) => ({
         name: 'Project',
-        params: { organizationId: row.name },
+        params: { projectId: row.name },
         query: { view: route.query.view, viewType: route.params.viewType },
       }),
       selectable: options.selectable,

@@ -86,10 +86,20 @@ const routes = [
     component: () => import('@/pages/Projects.vue'),
   },
   {
+    path: '/projects/:projectId',
+    name: 'Project',
+    component: () => import(`@/pages/${handleMobileView('Project')}.vue`),
+  },
+  {
     alias: '/units',
     path: '/units/view/:viewType?',
     name: 'Units',
     component: () => import('@/pages/Units.vue'),
+  },
+  {
+    path: '/units/:unitId',
+    name: 'Unit',
+    component: () => import(`@/pages/${handleMobileView('Unit')}.vue`),
   },
   {
     path: '/data-import',
