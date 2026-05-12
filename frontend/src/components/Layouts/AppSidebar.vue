@@ -128,16 +128,6 @@
         </template>
       </SidebarLink>
     </div>
-    <SidebarLink
-  id="products-btn"
-  :label="__('Products')"
-  :icon="PackageIcon" // You can use an existing icon like PackageIcon or create a new ProductsIcon
-  :isCollapsed="isSidebarCollapsed"
-  class="relative mx-2 my-[1.5px]"
-  @click="() => router.push('/products')"
-  :active="route.path.startsWith('/products')"
->
-</SidebarLink>
     <Notifications />
     <Settings />
     <HelpModal
