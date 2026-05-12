@@ -2,9 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { usersStore } from '@/stores/users'
 import { sessionStore } from '@/stores/session'
 import { viewsStore } from '@/stores/views'
-import Product from '@/pages/Product.vue'
-
-
 const routes = [
   {
     path: '/',
@@ -89,14 +86,10 @@ const routes = [
     component: () => import('@/pages/Projects.vue'),
   },
   {
-  },
-  {
     alias: '/units',
     path: '/units/view/:viewType?',
     name: 'Units',
     component: () => import('@/pages/Units.vue'),
-  },
-  {
   },
   {
     path: '/data-import',
@@ -128,27 +121,6 @@ const routes = [
     name: 'Not Permitted',
     component: () => import('@/pages/NotPermitted.vue'),
   },
-
-
-const productRoutes = [
-  {
-    path: '/products',
-    alias: '/products/view/viewType',
-    name: 'Products',
-    component: Products,
-    meta: {
-      title: 'Products'
-    }
-  },
-  {
-    path: '/products/:productId',
-    name: 'Product',
-    component: Product,
-    props: true,
-    meta: {
-      title: 'Product'
-    }
-  }
 ]
 
 const handleMobileView = (componentName) => {
