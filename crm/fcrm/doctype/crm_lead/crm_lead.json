@@ -70,7 +70,11 @@
   "facebook_form_id",
   "lost_details_tab",
   "lost_reason",
-  "lost_notes"
+  "lost_notes",
+  "real_estate_tab",
+  "lead_type",
+  "unit_owner",
+  "seller_units"
  ],
  "fields": [
   {
@@ -419,6 +423,34 @@
   {
    "fieldname": "column_break_opsm",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "real_estate_tab",
+   "fieldtype": "Tab Break",
+   "label": "Real Estate"
+  },
+  {
+   "default": "Buyer",
+   "fieldname": "lead_type",
+   "fieldtype": "Select",
+   "label": "Lead Type",
+   "options": "Buyer\nSeller",
+   "reqd": 1
+  },
+  {
+   "fieldname": "unit_owner",
+   "fieldtype": "Link",
+   "label": "Unit Owner",
+   "options": "Contact",
+   "depends_on": "eval:doc.lead_type==\"Seller\""
+  },
+  {
+   "fieldname": "seller_units",
+   "fieldtype": "Table",
+   "label": "Units",
+   "options": "CRM Lead Unit",
+   "depends_on": "eval:doc.lead_type==\"Seller\"",
+   "mandatory_depends_on": "eval:doc.lead_type==\"Seller\""
   }
  ],
  "grid_page_length": 50,
