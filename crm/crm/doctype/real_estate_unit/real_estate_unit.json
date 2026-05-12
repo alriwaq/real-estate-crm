@@ -8,11 +8,29 @@
  "engine": "InnoDB",
  "field_order": [
   "project",
+  "serial_number",
   "unit_number",
-  "area",
-  "price",
+  "unit_type",
+  "status",
   "owner",
-  "status"
+  "specifications_section",
+  "area",
+  "land_area",
+  "roof_area",
+  "bedrooms",
+  "bathrooms",
+  "finishing_status",
+  "pricing_section",
+  "price",
+  "down_payment",
+  "remaining_installment",
+  "total_installment",
+  "maintenance_fee",
+  "club_fee",
+  "parking_fee",
+  "installment_per",
+  "tracking_section",
+  "views_count"
  ],
  "fields": [
   {
@@ -23,20 +41,31 @@
    "reqd": 1
   },
   {
+   "fieldname": "serial_number",
+   "fieldtype": "Data",
+   "label": "Serial Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
    "fieldname": "unit_number",
    "fieldtype": "Data",
    "label": "Unit Number",
    "reqd": 1
   },
   {
-   "fieldname": "area",
-   "fieldtype": "Float",
-   "label": "Area (sqm)"
+   "fieldname": "unit_type",
+   "fieldtype": "Link",
+   "label": "Unit Type",
+   "options": "Real Estate Unit Type",
+   "reqd": 1
   },
   {
-   "fieldname": "price",
-   "fieldtype": "Currency",
-   "label": "Price"
+   "default": "Available",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Available\nReserved\nSold"
   },
   {
    "fieldname": "owner",
@@ -45,11 +74,103 @@
    "options": "Contact"
   },
   {
-   "default": "Available",
-   "fieldname": "status",
+   "fieldname": "specifications_section",
+   "fieldtype": "Section Break",
+   "label": "Specifications"
+  },
+  {
+   "fieldname": "area",
+   "fieldtype": "Float",
+   "label": "Area (sqm)"
+  },
+  {
+   "fieldname": "land_area",
+   "fieldtype": "Float",
+   "label": "Land Area (sqm)",
+   "depends_on": "eval:in_list([\"Villa\", \"Town House\", \"Twin House\", \"Quatro\", \"Ground Unit\"], doc.unit_type)",
+   "mandatory_depends_on": "eval:in_list([\"Villa\", \"Town House\", \"Twin House\", \"Quatro\", \"Ground Unit\"], doc.unit_type)"
+  },
+  {
+   "fieldname": "roof_area",
+   "fieldtype": "Float",
+   "label": "Roof Area (sqm)",
+   "depends_on": "eval:in_list([\"Penthouse\", \"Upper Duplex\"], doc.unit_type)",
+   "mandatory_depends_on": "eval:in_list([\"Penthouse\", \"Upper Duplex\"], doc.unit_type)"
+  },
+  {
+   "fieldname": "bedrooms",
+   "fieldtype": "Int",
+   "label": "Bedrooms"
+  },
+  {
+   "fieldname": "bathrooms",
+   "fieldtype": "Int",
+   "label": "Bathrooms"
+  },
+  {
+   "fieldname": "finishing_status",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "Available\nReserved\nSold"
+   "label": "Finishing Status",
+   "options": "Finished\nSemi Finished\nCore&Shell\nFlexy Finishing\nFurnished\nKitchen/AC"
+  },
+  {
+   "fieldname": "pricing_section",
+   "fieldtype": "Section Break",
+   "label": "Pricing"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Currency",
+   "label": "Price"
+  },
+  {
+   "fieldname": "down_payment",
+   "fieldtype": "Currency",
+   "label": "Down Payment"
+  },
+  {
+   "fieldname": "remaining_installment",
+   "fieldtype": "Currency",
+   "label": "Remaining Installment"
+  },
+  {
+   "fieldname": "total_installment",
+   "fieldtype": "Currency",
+   "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "maintenance_fee",
+   "fieldtype": "Currency",
+   "label": "Maintenance"
+  },
+  {
+   "fieldname": "club_fee",
+   "fieldtype": "Currency",
+   "label": "Club"
+  },
+  {
+   "fieldname": "parking_fee",
+   "fieldtype": "Currency",
+   "label": "Parking"
+  },
+  {
+   "fieldname": "installment_per",
+   "fieldtype": "Select",
+   "label": "Installment Per",
+   "options": "Monthly\nQuarterly\nSemi Annual\nAnnual"
+  },
+  {
+   "fieldname": "tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Tracking"
+  },
+  {
+   "default": "0",
+   "fieldname": "views_count",
+   "fieldtype": "Int",
+   "label": "Views Count",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,

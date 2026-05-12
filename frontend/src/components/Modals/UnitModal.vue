@@ -31,6 +31,18 @@
             :required="true"
           />
           <FormControl
+            :label="__('Serial Number')"
+            v-model="unit.doc.serial_number"
+            :required="true"
+          />
+          <FormControl
+            type="link"
+            doctype="Real Estate Unit Type"
+            :label="__('Unit Type')"
+            v-model="unit.doc.unit_type"
+            :required="true"
+          />
+          <FormControl
             type="number"
             :label="__('Area (sqm)')"
             v-model="unit.doc.area"
@@ -75,8 +87,8 @@ const { document: unit } = useDocument('Real Estate Unit')
 const { capture } = useTelemetry()
 
 async function createUnit() {
-  if (!unit.doc.project || !unit.doc.unit_number) {
-    error.value = 'Project and Unit Number are required'
+  if (!unit.doc.project || !unit.doc.unit_number || !unit.doc.serial_number || !unit.doc.unit_type) {
+    error.value = 'Project, Unit Number, Serial Number, and Unit Type are required'
     return
   }
 
