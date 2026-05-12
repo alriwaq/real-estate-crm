@@ -25,6 +25,7 @@
   "down_payment",
   "remaining_installment",
   "total_installment",
+  "remaining_to_pay",
   "maintenance_fee",
   "club_fee",
   "parking_fee",
@@ -137,6 +138,12 @@
    "fieldname": "total_installment",
    "fieldtype": "Currency",
    "label": "Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remaining_to_pay",
+   "fieldtype": "Currency",
+   "label": "Remaining to Pay",
    "read_only": 1
   },
   {

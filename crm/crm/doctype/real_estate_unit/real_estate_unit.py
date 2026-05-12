@@ -5,6 +5,7 @@ from frappe.utils import flt
 class RealEstateUnit(Document):
 	def validate(self):
 		self.total_installment = flt(self.down_payment) + flt(self.remaining_installment)
+		self.remaining_to_pay = flt(self.price) - flt(self.down_payment)
 
 	def onload(self):
 		if self.is_new():
